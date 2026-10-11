@@ -1,0 +1,184 @@
+{
+  "template_source_for_embedding": "",
+  "title_key": "תלוש שכר לחודש",
+  "title_keys": [
+    "תלוש שכר לחודש",
+    "תלוש משכורת לחודש",
+    "תלוש שכר",
+    "תלוש משכורת",
+    "משכורת לחודש",
+    "חודש שכר",
+    "פירוט תשלומים וניכויים"
+  ],
+  "months": {
+    "ינואר": 1,
+    "פברואר": 2,
+    "מרץ": 3,
+    "אפריל": 4,
+    "מאי": 5,
+    "יוני": 6,
+    "יולי": 7,
+    "אוגוסט": 8,
+    "ספטמבר": 9,
+    "אוקטובר": 10,
+    "נובמבר": 11,
+    "דצמבר": 12,
+    "מרס": 3
+  },
+  "codes": {
+    "current_payment": [
+      "198",
+      "197"
+    ],
+    "completion": "193"
+  },
+  "labels": {
+    "btl_gross": [
+      "ברוטו לב.לאומי",
+      "ברוטו לביטוח לאומי",
+      "ברוטו ביטוח לאומי",
+      "ברוטו לב.ל.",
+      "ברוטו לבט\"ל",
+      "ברוטו ב.ל.",
+      "שכר לביטוח לאומי",
+      "שכר לב.ל.",
+      "שכר חייב בביטוח לאומי",
+      "שכר חייב ב.ל.",
+      "שכר ב.לאומי",
+      "שכר ב.ל.",
+      "חייב ב.ל.",
+      "חייב בב.ל.",
+      "חייב בביטוח לאומי"
+    ],
+    "btl_variable": [
+      "ברוטו לב.ל ב.ק.",
+      "ברוטו לב.ל.ב.ק.",
+      "ברוטו לב.ל. בלתי קבוע",
+      "ברוטו לביטוח לאומי בלתי קבוע",
+      "ב.ל. בלתי קבוע",
+      "ביטוח לאומי בלתי קבוע"
+    ]
+  },
+  "label_not_followed_by": {
+    "btl_gross": [
+      "ב.ק.",
+      "בלתי",
+      "מצטבר",
+      "שנתי"
+    ],
+    "btl_variable": [
+      "מצטבר",
+      "שנתי"
+    ]
+  },
+  "workbook": {
+    "year_sheets": [
+      "2025",
+      "2026",
+      "2027"
+    ],
+    "first_month_column": "F",
+    "rows": {
+      "btl_gross": 9,
+      "current_payment": 11,
+      "completion": 12,
+      "nis_paid_value": 22,
+      "nis_paid_days": 23,
+      "reserve_days": 27
+    },
+    "helper_sheet": "חישובי בט\"ל בלתי קבוע",
+    "helper_date_column": "D",
+    "helper_value_column": "E",
+    "current_value_cell": "F36",
+    "editable_helper_ranges": [
+      "J13:J15",
+      "N13:N15"
+    ],
+    "old_layouts": [
+      {
+        "name": "2025-10 (days in row 23, day value in F31)",
+        "markers": {
+          "E23": "סה\"כ ימי מילואים בחודש",
+          "E31": "ערך יממ נוכחי",
+          "E33": "סה\"כ הפרש שנתי"
+        },
+        "rows": {
+          "btl_gross": 9,
+          "current_payment": 11,
+          "completion": 12,
+          "reserve_days": 23
+        },
+        "current_value_cell": "F31"
+      }
+    ]
+  },
+  "parsing": {
+    "line_tolerance": 3.0,
+    "left_panel_ratio": 0.285,
+    "table_header": {
+      "code": [
+        "סמל",
+        "קוד"
+      ],
+      "amount": [
+        "סכום",
+        "התשלום",
+        "סה\"כ"
+      ],
+      "payments_title": [
+        "תשלומים"
+      ],
+      "other_titles": [
+        "ניכויים",
+        "ניכוי",
+        "הפרשות",
+        "זקיפות"
+      ]
+    }
+  },
+  "reserve_form": {
+    "phrase": "אישור על תקופות שירות מילואים"
+  },
+  "summary": {
+    "label": "סה\"כ ביטוח לאומי חייב לי",
+    "label_range": "K23:O23",
+    "value_range": "K24:O24",
+    "year_total_cell": "F38"
+  },
+  "day_value_limits": {
+    "min": 328.76,
+    "max": 1730.33
+  },
+  "credit": {
+    "author": "Shai Shallev",
+    "footer": "© Shai Shallev · CC BY 4.0"
+  },
+  "nis_letter": {
+    "phrase": "אישור שנתי בגין תשלומים שהועברו למעסיק",
+    "table_header": "שולם למעסיק"
+  },
+  "bonus": {
+    "sheet": "תוספת לתקופות שירות",
+    "rate": 0.4
+  },
+  "disclaimer": {
+    "sheet": "הבהרה",
+    "title_he": "הבהרה חשובה – יש לקרוא לפני השימוש",
+    "he": [
+      "אינני רואה חשבון, אינני עורך דין ואינני יועץ מס, ואין לי כל קשר למוסד לביטוח לאומי, לצה\"ל או לכל גוף רשמי אחר.",
+      "הכלי, הקובץ והחישובים מבוססים על הפרשנות האישית שלי לחוק ולתקנות, ועשויים להכיל טעויות, להיות חלקיים או לא מעודכנים.",
+      "אין בכלי, בתוצאותיו או בכל מידע שנלווה אליו משום ייעוץ משפטי, חשבונאי, מיסויי או מקצועי מכל סוג.",
+      "השימוש בכלי ובתוצאותיו הוא על אחריותך בלבד. לפני שאתה פועל על סמך התוצאות (למשל פנייה לביטוח לאומי או למעסיק), יש להתייעץ עם איש מקצוע מוסמך (רואה חשבון, עורך דין או יועץ מס).",
+      "הכלי מסופק \"כמות שהוא\" (AS IS), ללא כל אחריות, מפורשת או משתמעת, ואני לא אחראי לכל נזק, הפסד או החלטה שנובעים מהשימוש בו."
+    ],
+    "title_en": "Important – please read before use",
+    "en": [
+      "I am not an accountant, a lawyer or a tax advisor, and I have no connection to the National Insurance Institute (Bituach Leumi), the IDF or any other official body.",
+      "This tool, its workbook and its calculations reflect my own personal interpretation of the law and regulations; they may contain errors, be incomplete or be out of date.",
+      "Nothing in this tool, its results or anything that comes with it is legal, accounting, tax or other professional advice.",
+      "You use the tool and its results entirely at your own risk. Before acting on the results, consult a qualified professional (an accountant, a lawyer or a tax advisor).",
+      "The tool is provided \"AS IS\", without warranty of any kind, and I am not liable for any damage, loss or decision arising from its use."
+    ],
+    "footer": "לא ייעוץ מקצועי – ראו גיליון הבהרה"
+  }
+}

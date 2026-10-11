@@ -1,0 +1,947 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>מילוי ערך ימ״מ מתלושי שכר</title>
+<style nonce="__NONCE__">
+:root{
+  --bg:#f4f6f8; --card:#ffffff; --text:#1c2733; --muted:#5d6b7a; --line:#dde3ea; --soft:#eef2f6;
+  --accent:#0f766e; --accent-hover:#0b5e57; --accent-soft:#e0f2f0; --on-accent:#ffffff;
+  --ok:#166534; --ok-bg:#dcfce7; --warn:#92400e; --warn-bg:#fef3c7; --err:#991b1b; --err-bg:#fee2e2;
+  --focus:#2563eb; --radius:14px;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#10161c; --card:#18212a; --text:#e6edf3; --muted:#9aa8b6; --line:#2b3743; --soft:#1f2a34;
+    --accent:#2dd4bf; --accent-hover:#5eead4; --accent-soft:#12302d; --on-accent:#062a27;
+    --ok:#86efac; --ok-bg:#14301f; --warn:#fcd34d; --warn-bg:#352a0c; --err:#fca5a5; --err-bg:#3a1717;
+    --focus:#60a5fa;
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 "Segoe UI","Noto Sans Hebrew",Arial,sans-serif}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.wrap{max-width:1000px;margin:0 auto;padding:28px 20px 60px}
+header{display:flex;align-items:center;gap:16px;margin-bottom:24px}
+.mark{flex:none;width:52px;height:52px;border-radius:14px;background:var(--accent);color:var(--on-accent);display:grid;place-items:center}
+.mark svg{width:30px;height:30px}
+h1{margin:0;font-size:26px;line-height:1.25;font-weight:700}
+.sub{margin:2px 0 0;color:var(--muted);font-size:15px}
+.pill{margin-inline-start:auto;display:inline-flex;align-items:center;gap:8px;background:var(--accent-soft);color:var(--accent);border-radius:999px;padding:6px 14px;font-size:14px;font-weight:600;white-space:nowrap}
+.pill svg{width:16px;height:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px;margin-bottom:18px}
+.card h2{display:flex;align-items:center;gap:12px;margin:0 0 16px;font-size:19px;font-weight:700}
+.step{flex:none;width:30px;height:30px;border-radius:50%;background:var(--accent);color:var(--on-accent);display:grid;place-items:center;font-size:15px;font-weight:700}
+.drop{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;padding:34px 18px;border:2px dashed var(--line);border-radius:var(--radius);background:var(--soft);cursor:pointer;transition:border-color .15s,background .15s}
+.drop:hover,.drop.over{border-color:var(--accent);background:var(--accent-soft)}
+.drop svg{width:44px;height:44px;color:var(--accent)}
+.drop strong{font-size:18px}
+.drop span{color:var(--muted);font-size:15px}
+.row{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid var(--line);background:var(--card);border-radius:10px;padding:10px 18px;cursor:pointer;font-weight:600;transition:background .12s,border-color .12s}
+.btn:hover{background:var(--soft);border-color:var(--muted)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.btn.primary:hover{background:var(--accent-hover);border-color:var(--accent-hover)}
+.btn.small{padding:6px 12px;font-size:14px}
+.btn.link{border-color:transparent;background:transparent;color:var(--muted)}
+.btn[disabled]{opacity:.55;cursor:wait}
+.btn svg{width:18px;height:18px}
+.files{list-style:none;margin:16px 0 0;padding:0;display:grid;grid-template-columns:1fr;gap:10px}
+.boxes{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px}
+@media (max-width:860px){.boxes{grid-template-columns:1fr}.box{grid-row:auto;grid-template-rows:none}}
+.box{min-width:0;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px;
+  display:grid;grid-template-rows:subgrid;grid-row:span 5;row-gap:0;align-content:start}
+.box h3{margin:0 0 2px;font-size:17px;font-weight:700}
+.box > .hint{margin:0 0 12px}
+.box > .drop{align-self:stretch;justify-content:center}
+.box > .row{margin-top:12px}
+.box .row .btn{flex:1 1 0;padding:9px 10px;white-space:nowrap}
+.box > .files{align-self:start}
+.howto{margin-top:4px}
+.howto summary{cursor:pointer;color:var(--accent);font-weight:600;width:fit-content}
+.howto ol{margin:6px 0 0;padding-inline-start:20px}
+.howto li{margin:2px 0}
+.box .hint{margin:0 0 12px}
+.box .drop{padding:26px 14px}
+.box .drop strong{font-size:16px}
+.file{position:relative;display:flex;align-items:center;gap:10px;background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:10px 12px;overflow:hidden}
+.file svg{flex:none;width:22px;height:22px;color:var(--accent)}
+.file .meta{min-width:0;flex:1}
+.file .name{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:15px;direction:ltr;text-align:end}
+.file .size{display:block;color:var(--muted);font-size:13px;direction:ltr;text-align:end}
+.file .x{flex:none;border:0;background:transparent;color:var(--muted);cursor:pointer;font-size:20px;line-height:1;border-radius:6px;padding:2px 6px}
+.file .x:hover{background:var(--line);color:var(--text)}
+.file .bar{position:absolute;inset-inline:0;bottom:0;height:3px;background:var(--accent);transform-origin:right}
+.fieldgroup{margin-top:18px}
+.input.short{max-width:220px}
+.pathrow{display:flex;gap:10px;align-items:stretch}
+.pathrow .input{flex:1;min-width:0}
+.problems{margin:6px 0 0;padding-inline-start:20px;font-size:14px;color:var(--warn)}
+.problems:empty{display:none}
+.problems li{margin:2px 0}
+.banner .row{margin-top:10px}
+.banner ul.problems{color:inherit}
+@media (max-width:720px){.pill{display:none}}
+label.field{display:block;font-weight:600;margin-bottom:6px}
+.input{width:100%;border:1px solid var(--line);background:var(--card);border-radius:10px;padding:10px 12px;direction:ltr;text-align:left}
+.input:disabled{background:var(--soft);color:var(--muted)}
+.hint{margin:6px 0 0;color:var(--muted);font-size:14px}
+.hint.warn{color:var(--warn)}
+.reserve{margin:0 0 20px}
+.reserve h3{margin:0 0 6px;font-size:17px;font-weight:700}
+.reserve .banner{margin-bottom:10px;padding:10px 14px}
+.mono-cell{direction:ltr;text-align:start;font-family:Consolas,"Courier New",monospace;font-size:14px}
+.parts{margin:0;padding-inline-start:20px}
+.parts li{margin:3px 0}
+.rng{direction:ltr;unicode-bidi:isolate;font-variant-numeric:tabular-nums}
+.opt{display:flex;align-items:flex-start;gap:10px;margin:8px 0;cursor:pointer}
+.opt input{margin-top:5px;accent-color:var(--accent);width:18px;height:18px}
+.actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.status{color:var(--muted);font-size:15px;min-height:1.6em}
+.spin{display:inline-block;width:16px;height:16px;border:2px solid var(--line);border-top-color:var(--accent);border-radius:50%;animation:sp .8s linear infinite;vertical-align:-3px;margin-inline-end:8px}
+@keyframes sp{to{transform:rotate(360deg)}}
+.banner{display:flex;gap:12px;align-items:flex-start;border-radius:12px;padding:14px 16px;margin-bottom:16px;border:1px solid transparent}
+.banner.err{background:var(--err-bg);color:var(--err);border-color:var(--err)}
+.banner.ok{background:var(--ok-bg);color:var(--ok);border-color:var(--ok)}
+.banner.warn{background:var(--warn-bg);color:var(--warn);border-color:var(--warn)}
+.banner svg{flex:none;width:22px;height:22px;margin-top:2px}
+.banner .t{flex:1}
+.banner b{display:block}
+.banner code{direction:ltr;unicode-bidi:embed;word-break:break-all;font-size:13px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:16px}
+.tile{background:var(--soft);border-radius:12px;padding:14px 16px}
+.tile .k{color:var(--muted);font-size:14px}
+.tile .v{font-size:28px;font-weight:700;line-height:1.2}
+.tile .v.small{font-size:20px}
+.tile.ok .v{color:var(--ok)}.tile.warn .v{color:var(--warn)}.tile.err .v{color:var(--err)}
+.owed{border-radius:12px;overflow:hidden;border:1px solid #2f5f8f;margin-bottom:16px;text-align:center;color:#000;font-weight:700}
+.owed .lab{background:#4a90e2;padding:8px 16px;font-size:18px}
+.owed .val{background:#70ad47;padding:10px 16px;font-size:28px;direction:ltr}
+.owed-note{margin:-8px 0 16px;color:var(--muted);font-size:14px}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{padding:9px 10px;text-align:start;border-bottom:1px solid var(--line);white-space:nowrap}
+th{background:var(--soft);color:var(--muted);font-weight:600;font-size:14px;position:sticky;top:0}
+tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:end;font-variant-numeric:tabular-nums;direction:ltr}
+td.fname{max-width:1px;width:30%;overflow:hidden;text-overflow:ellipsis;direction:ltr;text-align:end}   /* shrinks first: the table fits the page */
+.chip{display:inline-block;border-radius:999px;padding:3px 12px;font-size:13px;font-weight:700}
+.chip.ok{background:var(--ok-bg);color:var(--ok)}.chip.warn{background:var(--warn-bg);color:var(--warn)}.chip.err{background:var(--err-bg);color:var(--err)}
+tr.detail td{white-space:normal;overflow-wrap:anywhere;background:var(--soft)}
+tr.detail ul{margin:0;padding-inline-start:20px}
+tr.detail li{margin:3px 0}
+tr.detail .mono{direction:ltr;text-align:left;font-family:Consolas,"Courier New",monospace;font-size:13px;color:var(--muted);unicode-bidi:plaintext}
+.disclaimer{background:var(--warn-bg);color:var(--warn);border:1px solid var(--warn);border-radius:12px;padding:12px 16px;margin:0 0 18px;font-size:14px;line-height:1.6}
+.owed-disclaimer{margin:-10px 0 16px;color:var(--warn);font-size:13px}
+.note{display:flex;gap:10px;align-items:flex-start;background:var(--warn-bg);color:var(--warn);border-radius:12px;padding:12px 16px;margin-top:16px}
+.note svg{flex:none;width:20px;height:20px;margin-top:3px}
+footer{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;color:var(--muted);font-size:14px;margin-top:8px}
+.hidden{display:none !important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.closed{max-width:520px;margin:18vh auto;text-align:center}
+.closed .mark{margin:0 auto 18px}
+</style>
+</head>
+<body>
+<div class="wrap" id="app">
+  <header>
+    <div class="mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="m9 14 2 2 4-4"/></svg></div>
+    <div>
+      <h1>מילוי ערך ימ״מ מתלושי שכר</h1>
+      <p class="sub">גוררים תלושים, בודקים את הערכים, ומקבלים אקסל מלא</p>
+    </div>
+    <span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>רץ במחשב שלך בלבד</span>
+  </header>
+
+  <aside class="disclaimer" aria-label="הבהרה">
+    <strong>הבהרה:</strong> אינני רואה חשבון, עורך דין או יועץ מס, ואין לי כל קשר לביטוח לאומי, לצה״ל או לגוף רשמי אחר.
+    הכלי מבוסס על הפרשנות האישית שלי לחוק ולתקנות, ועלול לטעות. הוא אינו ייעוץ משפטי, חשבונאי או מקצועי, והשימוש בו
+    ובתוצאותיו הוא על אחריותך בלבד. לפני שפועלים על סמך התוצאות – יש להתייעץ עם איש מקצוע מוסמך.
+  </aside>
+
+  <div id="alerts" role="alert" aria-live="assertive"></div>
+
+  <section class="card" aria-labelledby="h1">
+    <h2 id="h1"><span class="step">1</span>הוסף קבצים</h2>
+    <div class="boxes">
+      <div class="box" id="box-slips">
+        <h3>תלושי שכר</h3>
+        <p class="hint">קובץ אחד יכול להכיל כמה תלושים. נכתבים לשורות 9–12.</p>
+        <div class="drop" id="drop-slips" role="button" tabindex="0" aria-label="גרור לכאן תלושי שכר, או לחץ לבחירה">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4"/><path d="m7 9 5-5 5 5"/><path d="M20 16v3a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-3"/></svg>
+          <strong>גרור לכאן תלושים (PDF)</strong>
+        </div>
+        <div class="row">
+          <button class="btn" id="pickFiles-slips" type="button">בחר קבצים…</button>
+          <button class="btn" id="pickFolder-slips" type="button">בחר תיקייה…</button>
+          <button class="btn link hidden" id="clear-slips" type="button">נקה</button>
+        </div>
+        <input class="sr" type="file" id="fileInput-slips" accept=".pdf,application/pdf" multiple tabindex="-1" aria-hidden="true">
+        <input class="sr" type="file" id="folderInput-slips" webkitdirectory multiple tabindex="-1" aria-hidden="true">
+        <ul class="files" id="files-slips" aria-live="polite"></ul>
+      </div>
+      <div class="box" id="box-form">
+        <h3>אישור שירות מילואים (3010)</h3>
+        <p class="hint">כל עמודי האישור. ימי המילואים נכתבים לשורה 27.</p>
+        <div class="drop" id="drop-form" role="button" tabindex="0" aria-label="גרור לכאן את אישור שירות המילואים, או לחץ לבחירה">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4"/><path d="m7 9 5-5 5 5"/><path d="M20 16v3a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-3"/></svg>
+          <strong>גרור לכאן את טופס 3010 (PDF)</strong>
+        </div>
+        <div class="row">
+          <button class="btn" id="pickFiles-form" type="button">בחר קבצים…</button>
+          <button class="btn" id="pickFolder-form" type="button">בחר תיקייה…</button>
+          <button class="btn link hidden" id="clear-form" type="button">נקה</button>
+        </div>
+        <input class="sr" type="file" id="fileInput-form" accept=".pdf,application/pdf" multiple tabindex="-1" aria-hidden="true">
+        <input class="sr" type="file" id="folderInput-form" webkitdirectory multiple tabindex="-1" aria-hidden="true">
+        <ul class="files" id="files-form" aria-live="polite"></ul>
+      </div>
+      <div class="box" id="box-letter">
+        <h3>אישור שנתי מביטוח לאומי</h3>
+        <div class="hint">״אישור שנתי בגין תשלומים שהועברו למעסיק״. נכתב לשורות 22–23.
+          <details class="howto">
+            <summary>איך מפיקים את האישור?</summary>
+            <ol>
+              <li>נכנסים לאתר הביטוח הלאומי (btl.gov.il) ומזדהים.</li>
+              <li>מילואים ← אישורים ← ״אישור שנתי בגין תשלומים שהועברו למעסיקך״.</li>
+              <li>מפיקים אישור נפרד לכל שנה, שומרים כ-PDF, ומעלים כאן (אפשר כמה שנים יחד).</li>
+            </ol>
+          </details>
+        </div>
+        <div class="drop" id="drop-letter" role="button" tabindex="0" aria-label="גרור לכאן את האישור השנתי של ביטוח לאומי, או לחץ לבחירה">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4"/><path d="m7 9 5-5 5 5"/><path d="M20 16v3a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-3"/></svg>
+          <strong>גרור לכאן את האישור (PDF)</strong>
+        </div>
+        <div class="row">
+          <button class="btn" id="pickFiles-letter" type="button">בחר קבצים…</button>
+          <button class="btn" id="pickFolder-letter" type="button">בחר תיקייה…</button>
+          <button class="btn link hidden" id="clear-letter" type="button">נקה</button>
+        </div>
+        <input class="sr" type="file" id="fileInput-letter" accept=".pdf,application/pdf" multiple tabindex="-1" aria-hidden="true">
+        <input class="sr" type="file" id="folderInput-letter" webkitdirectory multiple tabindex="-1" aria-hidden="true">
+        <ul class="files" id="files-letter" aria-live="polite"></ul>
+      </div>
+    </div>
+    <p class="hint">הקבצים לא עוזבים את המחשב. אפשר להעלות כל שילוב: רק תלושים, רק אישורים, או הכל.</p>
+  </section>
+
+  <section class="card" aria-labelledby="h2">
+    <h2 id="h2"><span class="step">2</span>איפה לשמור את קובץ האקסל</h2>
+    <label class="field" for="result">נתיב הקובץ</label>
+    <div class="pathrow">
+      <input class="input" id="result" type="text" spellcheck="false" autocomplete="off">
+      <button class="btn" id="pickResult" type="button">בחר מיקום…</button>
+    </div>
+    <p class="hint" id="resultHint"></p>
+    <ul class="problems" id="resultProblems"></ul>
+    <div class="row hidden" id="backupRow">
+      <button class="btn small" id="restoreBackup" type="button">שחזר גיבוי</button>
+      <span class="hint" id="backupInfo"></span>
+    </div>
+    <div class="fieldgroup">
+      <label class="field" for="dayValue">ערך ימ״מ נוכחי (₪ ליום)</label>
+      <input class="input short" id="dayValue" type="text" inputmode="decimal" autocomplete="off" placeholder="למשל 1650.50">
+      <p class="hint" id="dayValueHint"></p>
+    </div>
+    <label class="opt"><input type="checkbox" id="overwrite"><span>לדרוס ערכים שונים שכבר קיימים בתאים<br><span class="hint">בלי זה, תא עם ערך אחר מדולג ומוצג בדוח.</span></span></label>
+  </section>
+
+  <section class="card" aria-labelledby="h3">
+    <h2 id="h3"><span class="step">3</span>הפעלה</h2>
+    <div class="actions">
+      <button class="btn" id="check" type="button">בדיקה בלבד</button>
+      <button class="btn primary" id="fill" type="button">מילוי האקסל</button>
+      <span class="status" id="status" aria-live="polite"></span>
+    </div>
+    <p class="hint">מומלץ להתחיל ב״בדיקה בלבד״ ולהשוות כמה ערכים לתלוש לפני המילוי.</p>
+  </section>
+
+  <section class="card hidden" id="results" aria-labelledby="h4">
+    <h2 id="h4">תוצאות</h2>
+    <div id="resultBanner"></div>
+    <div id="owed" class="hidden"></div>
+    <div class="tiles" id="tiles"></div>
+    <section class="reserve hidden" id="bonus" aria-labelledby="h7">
+      <h3 id="h7">תוספת לתקופות שירות (שארית ימים חלקי 7)</h3>
+      <p class="hint" id="bonusHint"></p>
+      <div class="tiles" id="bonusTiles"></div>
+      <div class="tablewrap">
+        <table>
+          <thead><tr>
+            <th scope="col">תקופה</th><th class="num" scope="col">ימים</th><th class="num" scope="col">שארית</th>
+            <th class="num" scope="col">ערכי יום נוספים</th><th scope="col">חודש החישוב</th><th class="num" scope="col">ערך יומי</th>
+            <th class="num" scope="col">תוספת</th>
+          </tr></thead>
+          <tbody id="bonusRows"></tbody>
+        </table>
+      </div>
+    </section>
+    <section class="reserve hidden" id="letter" aria-labelledby="h6">
+      <h3 id="h6">תשלומי ביטוח לאומי מהאישור השנתי</h3>
+      <p class="hint" id="letterHint"></p>
+      <div id="letterWarnings"></div>
+      <div class="tablewrap">
+        <table>
+          <thead><tr>
+            <th scope="col">חודש</th><th class="num" scope="col">ימים ששולמו</th><th class="num" scope="col">סכום ששולם</th>
+            <th class="num" scope="col">ערך ליום</th><th scope="col">תאים באקסל</th>
+          </tr></thead>
+          <tbody id="letterRows"></tbody>
+        </table>
+      </div>
+    </section>
+    <section class="reserve hidden" id="reserve" aria-labelledby="h5">
+      <h3 id="h5">ימי מילואים מאישור השירות (טופס 3010)</h3>
+      <p class="hint" id="reserveHint"></p>
+      <div id="reserveWarnings"></div>
+      <div class="tablewrap">
+        <table>
+          <thead><tr>
+            <th scope="col">חודש</th><th class="num" scope="col">ימים</th><th scope="col">תא באקסל</th><th scope="col"><span class="sr">פירוט</span></th>
+          </tr></thead>
+          <tbody id="reserveRows"></tbody>
+        </table>
+      </div>
+    </section>
+    <div class="tablewrap" id="slipsWrap">
+      <table>
+        <thead><tr>
+          <th scope="col">קובץ</th><th scope="col">חודש</th><th class="num" scope="col">ברוטו ב״ל</th><th class="num" scope="col">בלתי קבוע</th>
+          <th class="num" scope="col">198 + 197</th><th class="num" scope="col">193</th><th scope="col">סטטוס</th><th scope="col"><span class="sr">פרטים</span></th>
+        </tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+    <div class="row hidden" id="resultActions">
+      <button class="btn primary" id="download" type="button">הורד את קובץ האקסל</button>
+      <button class="btn" id="openFolder" type="button">פתח את התיקייה</button>
+    </div>
+    <div class="note">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5"/><path d="M12 16h.01"/></svg>
+      <span>הערך ששולם ליום (שורות 22–23) נכתב מהאישור השנתי של ביטוח לאומי, וערך ימ״מ נוכחי (תא F36) מהשדה בשלב 2 – הוא גובר על האישור לכל השנה. ימי המילואים (שורה 27) מתמלאים מאישור שירות מילואים (טופס 3010). כל מה שלא הועלה אפשר להזין ידנית באקסל.
+        אם אקסל נפתח במצב מוגן (למשל קובץ שהורד), לחץ ״אפשר עריכה״ כדי שהנוסחאות יחושבו.</span>
+    </div>
+  </section>
+
+  <footer>
+    <span>הקבצים שהועלו נשמרים בתיקייה זמנית ונמחקים כשהתוכנה נסגרת. הכלי אינו ייעוץ מקצועי ואין לו קשר לביטוח לאומי.</span>
+    <button class="btn small" id="quit" type="button">סגור את התוכנה</button>
+  </footer>
+</div>
+
+<div class="closed hidden" id="closed">
+  <div class="mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></div>
+  <h1>התוכנה נסגרה</h1>
+  <p class="sub" id="closedText">הקבצים הזמניים נמחקו. אפשר לסגור את הלשונית.</p>
+</div>
+
+<script nonce="__NONCE__">
+(() => {
+  "use strict";
+  const params = new URLSearchParams(location.search);
+  const TOKEN = params.get("t") || "";
+  history.replaceState(null, "", location.pathname);
+
+  const $ = (s) => document.querySelector(s);
+  const MONTHS = ["ינואר","פברואר","מרץ","אפריל","מאי","יוני","יולי","אוגוסט","ספטמבר","אוקטובר","נובמבר","דצמבר"];
+  const money = new Intl.NumberFormat("he-IL", {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  const SVG = "http://www.w3.org/2000/svg";
+  const state = {files: [], busy: false, hasResult: false};
+
+  const store = {
+    get(k, d) { try { const v = localStorage.getItem("rd_" + k); return v === null ? d : v; } catch (e) { return d; } },
+    set(k, v) { try { localStorage.setItem("rd_" + k, v); } catch (e) { /* storage may be blocked */ } }
+  };
+
+  function el(tag, cls, text) {
+    const e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text !== undefined) e.textContent = text;
+    return e;
+  }
+  function icon(paths) {
+    const s = document.createElementNS(SVG, "svg");
+    s.setAttribute("viewBox", "0 0 24 24"); s.setAttribute("fill", "none"); s.setAttribute("stroke", "currentColor");
+    s.setAttribute("stroke-width", "2"); s.setAttribute("stroke-linecap", "round"); s.setAttribute("stroke-linejoin", "round");
+    s.setAttribute("aria-hidden", "true");
+    for (const d of paths) { const p = document.createElementNS(SVG, "path"); p.setAttribute("d", d); s.appendChild(p); }
+    return s;
+  }
+  const ICON_FILE = ["M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z", "M14 3v5h5"];
+  const ICON_ALERT = ["M12 9v4", "M12 17h.01", "M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"];
+  const ICON_OK = ["M5 12l5 5 9-10"];
+
+  async function api(path, opts) {
+    opts = opts || {};
+    const headers = Object.assign({"X-Token": TOKEN}, opts.headers || {});
+    let body = opts.body;
+    if (opts.json !== undefined) { body = JSON.stringify(opts.json); headers["Content-Type"] = "application/json"; }
+    const res = await fetch(path, {method: opts.method || "GET", headers, body});
+    if (opts.blob && res.ok) return res.blob();
+    let data = null;
+    try { data = await res.json(); } catch (e) { /* not json */ }
+    if (!res.ok) { const err = new Error((data && data.error) || ("שגיאה " + res.status)); err.data = data; throw err; }
+    return data;
+  }
+
+  function showAlert(kind, title, text, code) {
+    const box = el("div", "banner " + kind);
+    box.appendChild(icon(kind === "ok" ? ICON_OK : ICON_ALERT));
+    const t = el("div", "t");
+    if (title) t.appendChild(el("b", "", title));
+    if (text) t.appendChild(el("span", "", text));
+    if (code) { t.appendChild(el("br")); t.appendChild(el("code", "", code)); }
+    box.appendChild(t);
+    const x = el("button", "btn link small", "סגור"); x.type = "button";
+    x.addEventListener("click", () => box.remove());
+    box.appendChild(x);
+    $("#alerts").appendChild(box);
+    return box;
+  }
+  function clearAlerts() { $("#alerts").replaceChildren(); }
+  function setStatus(text, spin) {
+    const s = $("#status"); s.replaceChildren();
+    if (spin) s.appendChild(el("span", "spin"));
+    s.appendChild(document.createTextNode(text || ""));
+  }
+  function fmtSize(n) { return n >= 1048576 ? (n / 1048576).toFixed(1) + " MB" : Math.max(1, Math.round(n / 1024)) + " KB"; }
+
+  const KINDS = ["slips", "form", "letter"];
+  function renderFiles() {
+    for (const kind of KINDS) {
+      const ul = $("#files-" + kind); ul.replaceChildren();
+      const mine = state.files.filter((f) => f.kind === kind);
+      for (const f of mine) {
+        const li = el("li", "file");
+        li.appendChild(icon(ICON_FILE));
+        const meta = el("div", "meta");
+        meta.appendChild(el("span", "name", f.name));
+        meta.appendChild(el("span", "size", f.uploading ? "מעלה… " + f.pct + "%" : fmtSize(f.size)));
+        li.appendChild(meta);
+        if (!f.uploading) {
+          const x = el("button", "x", "×"); x.type = "button"; x.setAttribute("aria-label", "הסר " + f.name);
+          x.addEventListener("click", () => removeFile(f));
+          li.appendChild(x);
+        } else {
+          const bar = el("div", "bar"); bar.style.transform = "scaleX(" + (f.pct / 100) + ")"; li.appendChild(bar);
+        }
+        ul.appendChild(li);
+      }
+      $("#clear-" + kind).classList.toggle("hidden", mine.length === 0);
+    }
+  }
+
+  function uploadOne(file, entry, kind) {
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open("POST", "/api/upload?kind=" + kind + "&name=" + encodeURIComponent(file.name));
+      xhr.setRequestHeader("X-Token", TOKEN);
+      xhr.upload.onprogress = (e) => { if (e.lengthComputable) { entry.pct = Math.round(e.loaded / e.total * 100); renderFiles(); } };
+      xhr.onerror = () => reject(new Error("ההעלאה נכשלה: " + file.name));
+      xhr.onload = () => {
+        let data = null; try { data = JSON.parse(xhr.responseText); } catch (e) { /* ignore */ }
+        if (xhr.status === 200 && data) resolve(data); else reject(new Error((data && data.error) || ("שגיאה " + xhr.status)));
+      };
+      xhr.send(file);
+    });
+  }
+
+  async function addFiles(list, kind) {
+    const pdfs = Array.from(list).filter((f) => /\.pdf$/i.test(f.name));
+    const skipped = list.length - pdfs.length;
+    if (skipped > 0) showAlert("warn", "", skipped + " קבצים שאינם PDF לא נוספו.");
+    if (!pdfs.length) return;
+    for (const f of pdfs) {
+      const entry = {id: null, kind, name: f.name, size: f.size, uploading: true, pct: 0};
+      state.files.push(entry); renderFiles();
+      try {
+        const data = await uploadOne(f, entry, kind);
+        entry.id = data.id; entry.size = data.size; entry.uploading = false;
+      } catch (e) {
+        state.files.splice(state.files.indexOf(entry), 1);
+        showAlert("err", "", e.message);
+      }
+      renderFiles();
+    }
+  }
+
+  async function removeFile(f) {
+    try { await api("/api/remove", {method: "POST", json: {id: f.id}}); } catch (e) { showAlert("err", "", e.message); return; }
+    state.files.splice(state.files.indexOf(f), 1); renderFiles();
+  }
+
+  function readEntries(reader) {
+    return new Promise((res, rej) => reader.readEntries(res, rej));
+  }
+  async function walk(entry, out) {
+    if (entry.isFile) {
+      await new Promise((res) => entry.file((f) => { out.push(f); res(); }, res));
+    } else if (entry.isDirectory) {
+      const reader = entry.createReader();
+      for (;;) {
+        const batch = await readEntries(reader);
+        if (!batch.length) break;
+        for (const e of batch) await walk(e, out);
+      }
+    }
+  }
+  async function filesFromDrop(dt) {
+    const out = [];
+    const items = dt.items ? Array.from(dt.items) : [];
+    const entries = items.map((i) => (i.webkitGetAsEntry ? i.webkitGetAsEntry() : null)).filter(Boolean);
+    if (entries.length) { for (const e of entries) await walk(e, out); return out; }
+    return Array.from(dt.files);
+  }
+
+  // ---- results
+  function normLevel(level) { return level === "error" ? "err" : level; }
+  function statusChip(level, fillStatus) {
+    let kind = normLevel(level), text = kind === "ok" ? "תקין" : kind === "warn" ? "לבדיקה" : "דולג";
+    if (fillStatus === "partial") { kind = "warn"; text = "חלקי"; }
+    if (fillStatus === "skipped") { kind = "err"; text = "דולג"; }
+    return el("span", "chip " + kind, text);
+  }
+  function numCell(v) { return el("td", "num", v === null || v === undefined ? "—" : money.format(v)); }
+
+  function renderReserve(data) {
+    const box = $("#reserve"), r = data.reserve;
+    if (!r) { box.classList.add("hidden"); return; }
+    box.classList.remove("hidden");
+    $("#reserveHint").textContent = "נמצאו " + r.periods + " תקופות" + (r.duplicates ? " (" + r.duplicates + " כפולות אוחדו)" : "") +
+      ". כל יום נספר פעם אחת, ותקופה שחוצה חודשים מפוצלת לפי חודשים. הערכים נכתבים לשורה 27 וידרסו ערך קיים. חודשים בלי שירות לא משתנים.";
+    const warnBox = $("#reserveWarnings"); warnBox.replaceChildren();
+    for (const w of r.warnings) {
+      const b = el("div", "banner warn"); b.appendChild(icon(ICON_ALERT)); b.appendChild(el("div", "t", w)); warnBox.appendChild(b);
+    }
+    if (r.ocr) {
+      const b = el("div", "banner warn"); b.appendChild(icon(ICON_ALERT));
+      const t = el("div", "t"); t.appendChild(el("b", "", "ה-PDF לא הכיל טקסט (רק תמונות של העמודים), ולכן נקרא בזיהוי תמונה (OCR)"));
+      t.appendChild(el("span", "", "כל שורה נבדקה מול לוח השנה, אבל כדאי להשוות את הסכומים לאישור ולוודא שכל העמודים נמצאים בקובץ (מספרי העמודים לא ניתנים לקריאה מתמונה)."));
+      b.appendChild(t); warnBox.appendChild(b);
+    }
+    for (const m of r.mismatches) {
+      const b = el("div", "banner err"); b.appendChild(icon(ICON_ALERT));
+      b.appendChild(el("div", "t", m.start + " – " + m.end + ": כתוב " + m.stated + " ימים, אבל בלוח השנה " + m.span + ". השורה לא נכללה, בדוק אותה."));
+      warnBox.appendChild(b);
+    }
+    if (r.ignored.length) {
+      const b = el("div", "banner warn"); b.appendChild(icon(ICON_ALERT));
+      b.appendChild(el("div", "t", "לא נכללו ימים משנים שאין להן גיליון: " + r.ignored.map((x) => x.year + " (" + x.days + " ימים)").join(", ") + "."));
+      warnBox.appendChild(b);
+    }
+    const written = {};
+    for (const w of (r.written || [])) written[w.cell] = w;
+    const rows = $("#reserveRows"); rows.replaceChildren();
+    for (const m of r.months) {
+      const cell = m.year + "!" + String.fromCharCode(70 + m.month - 1) + "23";
+      const tr = el("tr");
+      tr.appendChild(el("td", "", MONTHS[m.month - 1] + " " + m.year));
+      tr.appendChild(el("td", "num", String(m.days)));
+      const w = written[cell];
+      tr.appendChild(el("td", "mono-cell", cell + (w ? (w.replaced ? "  (הוחלף " + w.previous + ")" : "  נכתב") : "")));
+      const more = el("td"), btn = el("button", "btn small", "פירוט"); btn.type = "button"; btn.setAttribute("aria-expanded", "false");
+      const detail = el("tr", "detail hidden"), td = el("td"); td.colSpan = 4;
+      const ul = el("ul", "parts");
+      for (const p of m.parts) {
+        const li = el("li"); li.appendChild(el("span", "rng", p.start + " – " + p.end));
+        li.appendChild(document.createTextNode("  ·  " + (p.days === 1 ? "יום אחד" : p.days + " ימים") + " בחודש זה")); ul.appendChild(li);
+      }
+      td.appendChild(ul); detail.appendChild(td);
+      btn.addEventListener("click", () => { const open = detail.classList.toggle("hidden") === false; btn.setAttribute("aria-expanded", String(open)); });
+      more.appendChild(btn); tr.appendChild(more);
+      rows.appendChild(tr); rows.appendChild(detail);
+    }
+  }
+
+  function renderOwed(data) {
+    const box = $("#owed"), o = data.owed;
+    box.replaceChildren();
+    if (!o) { box.classList.add("hidden"); return; }
+    box.classList.remove("hidden");
+    const card = el("div", "owed");
+    card.appendChild(el("div", "lab", "סה״כ ביטוח לאומי חייב לי"));
+    card.appendChild(el("div", "val", "₪ " + money.format(o.total)));
+    box.appendChild(card);
+    const years = Object.keys(o.years).filter((y) => o.years[y] !== 0).map((y) => y + ": ₪ " + money.format(o.years[y]));
+    let note = "מחושב מכל הנתונים שנבדקו (ומהקובץ הקיים, אם נבחר), באותן נוסחאות שבאקסל." + (years.length ? " לפי שנים: " + years.join(" · ") + "." : "");
+    if (!o.day_value_entered) note += " ערך ימ״מ נוכחי לא הוזן, ולכן הסכום אינו סופי.";
+    box.appendChild(el("p", "owed-note", note));
+    box.appendChild(el("p", "owed-disclaimer", "זו הערכה לפי פרשנות אישית לחוק, ולא ייעוץ מקצועי. לפני פנייה לביטוח לאומי או למעסיק – התייעץ עם איש מקצוע."));
+    if (o.unpaid_months && o.unpaid_months.length) {
+      const b = el("div", "banner warn"); b.appendChild(icon(ICON_ALERT));
+      const t = el("div", "t");
+      t.appendChild(el("b", "", "חודשים עם ימי מילואים בלי ערך ששולם"));
+      t.appendChild(el("span", "", o.unpaid_months.map((m) => MONTHS[m.month - 1] + " " + m.year).join(", ") +
+        ". בחודשים האלה אין ערך בשורה 22 (וגם לא ערך ימ״מ נוכחי), ולכן האקסל מחשב כאילו לא שולם דבר – כל ערך היום נספר כחוב. " +
+        "אם ביטוח לאומי כבר שילם עליהם, העלה את האישור השנתי של אותה שנה או הזן את הערך ידנית."));
+      b.appendChild(t); box.appendChild(b);
+    }
+    if (o.missing_months && o.missing_months.length) {
+      const b = el("div", "banner warn"); b.appendChild(icon(ICON_ALERT));
+      const t = el("div", "t");
+      t.appendChild(el("b", "", "חסרים תלושים לחודשים שמשמשים לחישוב הממוצע"));
+      t.appendChild(el("span", "", o.missing_months.map((m) => MONTHS[m.month - 1] + " " + m.year).join(", ") +
+        ". החישוב לוקח את 3 החודשים שלפני כל חודש מילואים, וחודש בלי תלוש נספר כ-0, כך שהסכום יוצא נמוך מדי. הוסף את התלושים של החודשים האלה."));
+      b.appendChild(t); box.appendChild(b);
+    }
+  }
+
+  function renderBonus(data) {
+    const box = $("#bonus"), b = data.bonus;
+    if (!b || !b.periods.length) { box.classList.add("hidden"); return; }
+    box.classList.remove("hidden");
+    $("#bonusHint").textContent = "תקופות רצופות אוחדו לתקופה אחת. שארית 1–5 של מספר הימים חלקי 7 מזכה ב-0.4 × השארית ערכי יום; שארית 6 – בערך יום אחד. " +
+      "ערך היום הוא הערך היומי המחושב (שורה 18) של חודש תחילת התקופה. החישוב נפרד ואינו נכלל בסה״כ ביטוח לאומי חייב לי" +
+      (b.sheet ? "; הוא נכתב לגיליון ״" + b.sheet + "״." : ".") +
+      (b.no_value ? " ל-" + b.no_value + " תקופות אין ערך יומי לחודש התחלתן (אין מספיק נתוני תלושים או שאין גיליון לשנה), והן לא נספרו." : "");
+    const tiles = $("#bonusTiles"); tiles.replaceChildren();
+    const specs = b.years.map((y) => ["תוספת " + y.year, "₪ " + money.format(y.amount)]).concat([["סה״כ תוספת", "₪ " + money.format(b.total)]]);
+    for (const [k, v] of specs) { const t = el("div", "tile"); t.appendChild(el("div", "k", k)); t.appendChild(el("div", "v small", v)); tiles.appendChild(t); }
+    const rows = $("#bonusRows"); rows.replaceChildren();
+    for (const p of b.periods) {
+      const tr = el("tr");
+      tr.appendChild(el("td", "mono-cell", p.start + " – " + p.end));
+      tr.appendChild(el("td", "num", String(p.days)));
+      tr.appendChild(el("td", "num", String(p.remainder)));
+      tr.appendChild(el("td", "num", String(p.factor)));
+      tr.appendChild(el("td", "", MONTHS[p.month - 1] + " " + p.year));
+      tr.appendChild(numCell(p.daily));
+      tr.appendChild(numCell(p.amount));
+      rows.appendChild(tr);
+    }
+  }
+
+  function renderLetter(data) {
+    const box = $("#letter"), r = data.letter;
+    if (!r) { box.classList.add("hidden"); return; }
+    box.classList.remove("hidden");
+    $("#letterHint").textContent = "נמצאו " + r.rows + " שורות תשלום" + (r.duplicates ? " (" + r.duplicates + " כפולות אוחדו)" : "") +
+      ". לכל חודש נכתבים הערך ששולם ליום (סכום ÷ ימים, שורה " + r.value_row + ") ומספר הימים ששולמו (שורה " + r.days_row + "). ערכים קיימים בשורות אלה מוחלפים.";
+    const warnBox = $("#letterWarnings"); warnBox.replaceChildren();
+    const add = (kind, title, text) => {
+      const b = el("div", "banner " + kind); b.appendChild(icon(ICON_ALERT));
+      const t = el("div", "t"); if (title) t.appendChild(el("b", "", title)); t.appendChild(el("span", "", text)); b.appendChild(t); warnBox.appendChild(b);
+    };
+    if (r.no_certificate) add("warn", "לא הועלה אישור שירות מילואים (טופס 3010)",
+      "שורה 27 (ימי המילואים ע״פ 3010) נשארת ריקה, ולכן ההפרש יוצא 0. אפשר להעלות את טופס 3010 בתיבה השנייה, או להזין את ימי המילואים ידנית באקסל בשורה 27.");
+    if (r.overridden_by) add("warn", "הוזן גם ערך ימ״מ נוכחי",
+      "ערך ימ״מ נוכחי (תא " + r.overridden_by + ") גובר על הערכים מהאישור לכל השנה. כדי להשתמש בערכים של כל חודש מהאישור, השאר את השדה ריק (ומחק את " + r.overridden_by + " באקסל).");
+    if (r.ocr) add("warn", "ה-PDF לא הכיל טקסט, ולכן נקרא בזיהוי תמונה (OCR)", "השווה את הסכומים לאישור.");
+    for (const w of r.warnings) add("warn", "", w);
+    if (r.ignored.length) add("warn", "", "לא נכללו תשלומים משנים שאין להן גיליון: " + r.ignored.map((x) => x.year + " (₪ " + money.format(x.amount) + ")").join(", ") + ".");
+    const written = {};
+    for (const w of (r.written || [])) written[w.cell] = w;
+    const rows = $("#letterRows"); rows.replaceChildren();
+    for (const m of r.months) {
+      const col = String.fromCharCode(70 + m.month - 1);
+      const cells = [m.year + "!" + col + r.value_row, m.year + "!" + col + r.days_row];
+      const tr = el("tr");
+      tr.appendChild(el("td", "", MONTHS[m.month - 1] + " " + m.year));
+      tr.appendChild(el("td", "num", String(m.days)));
+      tr.appendChild(numCell(m.amount));
+      tr.appendChild(numCell(m.value));
+      const done = cells.filter((c) => written[c]);
+      tr.appendChild(el("td", "mono-cell", cells.join(", ") + (done.length ? (done.some((c) => written[c].replaced) ? "  (הוחלף)" : "  נכתב") : "")));
+      rows.appendChild(tr);
+    }
+  }
+
+  function renderResults(data) {
+    const slips = data.slips || [];
+    $("#results").classList.remove("hidden");
+    $("#resultBanner").replaceChildren();
+    $("#resultActions").classList.add("hidden");
+
+    renderOwed(data);
+    renderBonus(data);
+    renderLetter(data);
+    renderReserve(data);
+    $("#slipsWrap").classList.toggle("hidden", !(data.slips || []).length);
+
+    const counts = {ok: 0, warn: 0, err: 0};
+    for (const s of slips) {
+      const lvl = s.fill_status === "skipped" ? "err" : s.fill_status === "partial" ? "warn" : normLevel(s.level);
+      counts[lvl] += 1;
+    }
+    const tiles = $("#tiles"); tiles.replaceChildren();
+    const specs = [];
+    if (slips.length) specs.push(["תלושים שנמצאו", slips.length, ""], ["תקינים", counts.ok, "ok"], ["לבדיקה", counts.warn, "warn"], ["דולגו", counts.err, "err"]);
+    if (data.reserve) specs.push(["ימי מילואים באישור", data.reserve.months.reduce((a, m) => a + m.days, 0), ""]);
+    if (data.letter) specs.push(["ימים ששולמו (ב״ל)", data.letter.months.reduce((a, m) => a + m.days, 0), ""]);
+    for (const [label, value, cls] of specs) {
+      const t = el("div", "tile " + cls); t.appendChild(el("div", "k", label)); t.appendChild(el("div", "v", String(value))); tiles.appendChild(t);
+    }
+
+    const banner = $("#resultBanner");
+    for (const fe of (data.file_errors || [])) {
+      const b = el("div", "banner err"); b.appendChild(icon(ICON_ALERT));
+      if (fe.included) { b.classList.replace("err", "warn"); }
+      const t = el("div", "t"); t.appendChild(el("b", "", (fe.included ? "הערה לגבי הקובץ: " : "הקובץ לא נכלל: ") + fe.file)); t.appendChild(el("span", "", fe.error)); b.appendChild(t); banner.appendChild(b);
+    }
+    if (data.mode === "fill") {
+      const failed = data.failures > 0;
+      const b = el("div", "banner " + (failed ? "warn" : "ok")); b.appendChild(icon(failed ? ICON_ALERT : ICON_OK));
+      const t = el("div", "t");
+      t.appendChild(el("b", "", failed ? "הקובץ נשמר, אבל חלק מהתלושים או התאים דולגו" : "הקובץ נשמר"));
+      t.appendChild(el("code", "", data.saved));
+      t.appendChild(el("br"));
+      const reserveCells = (data.reserve && data.reserve.written) ? data.reserve.written.length : 0;
+      t.appendChild(el("span", "", "נכתבו " + (data.written + reserveCells) + " תאים" + (data.skipped ? ", דולגו " + data.skipped + " תאים." : ".") +
+        (data.migrated ? " הקובץ נבנה במבנה קודם, ולכן הומר למבנה החדש וכל הנתונים שבו הועתקו (הקובץ הישן נשמר בגיבוי)." :
+         data.existed ? " הקובץ כבר היה קיים והתלושים נוספו אליו." : "")));
+      if (data.skipped) {
+        t.appendChild(el("br"));
+        t.appendChild(el("span", "", "תאים שדולגו כבר הכילו ערך אחר. סמן ״לדרוס ערכים שונים״ כדי להחליף אותם, או בחר שם קובץ חדש."));
+      }
+      b.appendChild(t); banner.appendChild(b);
+      $("#resultActions").classList.remove("hidden");
+      state.hasResult = true;
+    } else if (!slips.length && !(data.file_errors || []).length) {
+      banner.appendChild(el("p", "hint", "לא נמצאו תלושים."));
+    }
+
+    renderDayValue(data, banner);
+    const rows = $("#rows"); rows.replaceChildren();
+    for (const s of slips) {
+      const tr = el("tr");
+      const nameCell = el("td", "fname", s.name); nameCell.title = s.name; tr.appendChild(nameCell);   // full name on hover
+      tr.appendChild(el("td", "", s.month ? MONTHS[s.month - 1] + " " + s.year : "—"));
+      tr.appendChild(numCell(s.gross)); tr.appendChild(numCell(s.variable)); tr.appendChild(numCell(s.payment)); tr.appendChild(numCell(s.topup));
+      const st = el("td"); st.appendChild(statusChip(s.level, s.fill_status)); tr.appendChild(st);
+      const more = el("td");
+      const hasDetail = (s.issues && s.issues.length) || (s.messages && s.messages.length);
+      let detailRow = null;
+      if (hasDetail) {
+        const b = el("button", "btn small", "פרטים"); b.type = "button"; b.setAttribute("aria-expanded", "false");
+        detailRow = el("tr", "detail hidden");
+        const td = el("td"); td.colSpan = 8;
+        if (s.issues && s.issues.length) { const ul = el("ul"); for (const i of s.issues) ul.appendChild(el("li", "", i)); td.appendChild(ul); }
+        if (s.messages && s.messages.length) { const ul = el("ul"); for (const m of s.messages) ul.appendChild(el("li", "mono", m.trim())); td.appendChild(ul); }
+        detailRow.appendChild(td);
+        b.addEventListener("click", () => { const open = detailRow.classList.toggle("hidden") === false; b.setAttribute("aria-expanded", String(open)); });
+        more.appendChild(b);
+        if (s.level !== "ok" || s.fill_status === "partial") { detailRow.classList.remove("hidden"); b.setAttribute("aria-expanded", "true"); }
+      }
+      tr.appendChild(more); rows.appendChild(tr);
+      if (detailRow) rows.appendChild(detailRow);
+    }
+    $("#results").scrollIntoView({behavior: "smooth", block: "start"});
+  }
+
+  function askReplace(problems) {
+    clearAlerts();
+    const box = el("div", "banner warn"); box.appendChild(icon(ICON_ALERT));
+    const t = el("div", "t");
+    t.appendChild(el("b", "", "הקובץ שנבחר לא תואם לתבנית המובנית"));
+    const ul = el("ul", "problems"); for (const p of problems.slice(0, 6)) ul.appendChild(el("li", "", p)); t.appendChild(ul);
+    t.appendChild(el("span", "", "להחליף אותו בקובץ חדש? הקובץ הישן יישמר בגיבוי נסתר, ואפשר יהיה לשחזר אותו."));
+    const row = el("div", "row");
+    const yes = el("button", "btn primary small", "החלף את הקובץ והמשך"); yes.type = "button";
+    const no = el("button", "btn small", "ביטול"); no.type = "button";
+    yes.addEventListener("click", () => { box.remove(); run("fill", true); });
+    no.addEventListener("click", () => box.remove());
+    row.appendChild(yes); row.appendChild(no); t.appendChild(row); box.appendChild(t);
+    $("#alerts").appendChild(box);
+    box.scrollIntoView({behavior: "smooth", block: "center"});
+  }
+
+  async function run(mode, replace) {
+    if (state.busy) return;
+    clearAlerts();
+    if (mode === "check" && !state.files.some((f) => !f.uploading)) { showAlert("warn", "", "לא נוספו קבצים. הוסף תלושי שכר, אישור מילואים, או את שניהם."); return; }
+    if (state.files.some((f) => f.uploading)) { showAlert("warn", "", "ההעלאה עדיין מתבצעת, נסה שוב בעוד רגע."); return; }
+    state.busy = true; $("#check").disabled = true; $("#fill").disabled = true;
+    const slow = state.files.some((f) => f.kind === "form" || f.kind === "letter") ? " (אם ה-PDF של אישור המילואים מכיל רק תמונות של העמודים, קריאתו בזיהוי תמונה יכולה לקחת עד דקה)" : "";
+    setStatus((mode === "fill" ? "ממלא את האקסל…" : "בודק את הקבצים…") + slow, true);
+    try {
+      const data = await api("/api/run", {method: "POST", json: {
+        mode, result: $("#result").value, overwrite: $("#overwrite").checked, replace_incompatible: !!replace,
+        current_day_value: $("#dayValue").value}});
+      renderResults(data);
+      if (mode === "fill") refreshResultHint();
+      setStatus(mode === "fill" ? "הסתיים" : "הבדיקה הסתיימה (לא נכתב דבר)", false);
+    } catch (e) {
+      if (e.data && e.data.incompatible) { askReplace(e.data.problems); setStatus("ממתין להחלטה שלך", false); }
+      else { showAlert("err", "לא ניתן להמשיך", e.message); setStatus("", false); }
+    } finally {
+      state.busy = false; $("#check").disabled = false; $("#fill").disabled = false;
+    }
+  }
+
+  async function download() {
+    try {
+      const blob = await api("/api/download", {blob: true});
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob); a.download = ($("#result").value.trim() || "filled_reserve_duty").replace(/[\\/:*?"<>|]+/g, "_").replace(/(\.xlsx)?$/i, ".xlsx");
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+    } catch (e) { showAlert("err", "", e.message); }
+  }
+
+  function closedScreen(text) {
+    $("#app").classList.add("hidden"); $("#closed").classList.remove("hidden");
+    if (text) $("#closedText").textContent = text;
+  }
+
+  // ---- wiring
+  for (const kind of KINDS) {
+    const drop = $("#drop-" + kind), fileInput = $("#fileInput-" + kind), folderInput = $("#folderInput-" + kind);
+    drop.addEventListener("click", () => fileInput.click());
+    drop.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); fileInput.click(); } });
+    ["dragenter", "dragover"].forEach((ev) => drop.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.add("over"); }));
+    ["dragleave", "drop"].forEach((ev) => drop.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.remove("over"); }));
+    drop.addEventListener("drop", async (e) => { addFiles(await filesFromDrop(e.dataTransfer), kind); });
+    $("#pickFiles-" + kind).addEventListener("click", () => fileInput.click());
+    $("#pickFolder-" + kind).addEventListener("click", () => folderInput.click());
+    fileInput.addEventListener("change", (e) => { addFiles(e.target.files, kind); e.target.value = ""; });
+    folderInput.addEventListener("change", (e) => { addFiles(e.target.files, kind); e.target.value = ""; });
+    $("#clear-" + kind).addEventListener("click", async () => {
+      try { await api("/api/clear", {method: "POST", json: {kind}}); } catch (e) { showAlert("err", "", e.message); return; }
+      state.files = state.files.filter((f) => f.kind !== kind); renderFiles();
+    });
+  }
+  window.addEventListener("dragover", (e) => e.preventDefault());
+  window.addEventListener("drop", (e) => e.preventDefault());
+  $("#check").addEventListener("click", () => run("check"));
+  $("#fill").addEventListener("click", () => run("fill"));
+  $("#download").addEventListener("click", download);
+  $("#openFolder").addEventListener("click", () => api("/api/open-folder", {method: "POST", json: {}}).catch((e) => showAlert("err", "", e.message)));
+  const YEARS_TEXT = "2025, 2026, 2027";
+  let DAY_LIMITS = null;                                   // {min, max} from the server
+  const shekel = new Intl.NumberFormat("he-IL", {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  function rangeText(kind, limit) {
+    return kind === "above"
+      ? "הערך גבוה מהתקרה (₪" + shekel.format(limit) + "). בדוק שהזנת סכום של יום אחד. הוא ייכתב בכל זאת."
+      : "הערך נמוך מהמינימום (₪" + shekel.format(limit) + "). בדוק שהזנת סכום של יום אחד. הוא ייכתב בכל זאת.";
+  }
+  function rangeKind(value) {
+    if (!DAY_LIMITS || !value) return null;
+    if (value > DAY_LIMITS.max) return ["above", DAY_LIMITS.max];
+    if (value < DAY_LIMITS.min) return ["below", DAY_LIMITS.min];
+    return null;
+  }
+  function readDayValue() {
+    const raw = $("#dayValue").value.replace(/[,₪\s]/g, "");
+    if (raw === "") return {empty: true, value: 0};
+    const n = Number(raw);
+    if (!Number.isFinite(n) || n < 0) return {invalid: true};
+    return {empty: n === 0, value: n};
+  }
+  function updateDayValueHint() {
+    const hint = $("#dayValueHint"), v = readDayValue();
+    hint.classList.remove("warn");
+    if (v.invalid) { hint.textContent = "הערך חייב להיות מספר חיובי, למשל 1650.50."; hint.classList.add("warn"); }
+    else if (v.empty) {
+      hint.textContent = "לא הוזן ערך – זה בסדר אם מעלים את האישור השנתי של ביטוח לאומי (תיבה 3). אחרת אפשר להזין כאן ערך אחד לכל השנים, או למלא ידנית באקסל (תא F36, או שורה 22 לכל חודש).";
+      hint.classList.add("warn");
+    } else {
+      const out = rangeKind(v.value);
+      if (out) { hint.textContent = rangeText(out[0], out[1]); hint.classList.add("warn"); }
+      else { hint.textContent = "יירשם בתא F36 בכל גיליון שנה וגובר על האישור השנתי של ביטוח לאומי, ולפיו יחושבו ההפרשים."; }
+    }
+  }
+  $("#dayValue").addEventListener("input", updateDayValueHint);
+
+  function renderDayValue(data, banner) {
+    const d = data.day_value;
+    if (!d) return;
+    const add = (kind, title, text) => {
+      const b = el("div", "banner " + kind); b.appendChild(icon(kind === "ok" ? ICON_OK : ICON_ALERT));
+      const t = el("div", "t"); t.appendChild(el("b", "", title)); t.appendChild(el("span", "", text)); b.appendChild(t); banner.appendChild(b);
+    };
+    if (d.range_warning) {
+      add("warn", "ערך ימ״מ נוכחי חריג", rangeText(d.range_warning.kind, d.range_warning.limit));
+    }
+    if (data.mode === "fill" && d.written.length) {
+      const replaced = d.written.filter((w) => w.replaced).map((w) => w.cell + " (היה " + w.previous + ")");
+      add("ok", "ערך ימ״מ נוכחי נכתב", d.written.map((w) => w.cell).join(", ") + (replaced.length ? ". הוחלף: " + replaced.join(", ") : ""));
+    }
+    if (data.mode === "fill" && d.missing_years.length) {
+      add("warn", "ערך ימ״מ נוכחי לא הוזן, ולכן לא נכתב",
+        "וגם לא הועלה אישור שנתי של ביטוח לאומי לשנים: " + d.missing_years.join(", ") + ". העלה את האישור, או הזן ידנית באקסל (תא F36 או שורה 22). נוסחאות ההפרשים תלויות בזה.");
+    } else if (data.mode === "check" && !d.entered) {
+      add("warn", "ערך ימ״מ נוכחי לא הוזן",
+        "אם לא תעלה את האישור השנתי של ביטוח לאומי, יהיה צורך להזין ידנית באקסל (תא F36 או שורה 22).");
+    }
+  }
+
+  let hintTimer = null;
+  async function refreshResultHint() {
+    const hint = $("#resultHint"), problems = $("#resultProblems"), backupRow = $("#backupRow");
+    problems.replaceChildren(); backupRow.classList.add("hidden");
+    try {
+      const info = await api("/api/result-info", {method: "POST", json: {result: $("#result").value}});
+      hint.classList.remove("warn");
+      if (info.error) { hint.textContent = info.error; hint.classList.add("warn"); return; }
+      if (!info.exists) {
+        hint.textContent = "ייווצר קובץ חדש בתבנית המובנית. אפשר גם לבחור קובץ קיים כדי לעדכן אותו.";
+      } else if (info.old_layout) {
+        hint.textContent = "הקובץ נבנה במבנה קודם של התבנית. בעת המילוי הוא יומר למבנה החדש וכל הנתונים שבו יועתקו; לפני כן נשמר גיבוי נסתר של הקובץ הישן.";
+      } else if (info.compatible) {
+        hint.textContent = "הקובץ קיים ותואם לתבנית: התלושים יתווספו אליו, ותאים שכבר מכילים ערך שונה ידולגו. לפני כל עדכון נשמר גיבוי נסתר.";
+      } else {
+        hint.textContent = "הקובץ קיים אבל לא תואם לתבנית המובנית, ולכן אי אפשר לעדכן אותו. אפשר להחליף אותו בקובץ חדש (הקובץ הישן יישמר בגיבוי), ותתבקש לאשר זאת בעת המילוי.";
+        hint.classList.add("warn");
+        for (const p of info.problems.slice(0, 4)) problems.appendChild(el("li", "", p));
+        if (info.more || info.problems.length > 4) problems.appendChild(el("li", "", "ועוד…"));
+      }
+      if (info.has_backup) { backupRow.classList.remove("hidden"); $("#backupInfo").textContent = "יש גיבוי מ-" + info.backup_time; }
+    } catch (e) { /* the hint is optional */ }
+  }
+  $("#result").addEventListener("input", () => { clearTimeout(hintTimer); hintTimer = setTimeout(refreshResultHint, 400); });
+  $("#pickResult").addEventListener("click", async () => {
+    const btn = $("#pickResult"); btn.disabled = true;
+    try {
+      const r = await api("/api/pick-result", {method: "POST", json: {current: $("#result").value}});
+      if (r.error) showAlert("err", "", r.error);
+      else if (r.path) { $("#result").value = r.path; refreshResultHint(); }
+    } catch (e) { showAlert("err", "", e.message); } finally { btn.disabled = false; }
+  });
+  $("#restoreBackup").addEventListener("click", async () => {
+    try {
+      const r = await api("/api/restore-backup", {method: "POST", json: {result: $("#result").value}});
+      showAlert(r.restored ? "ok" : "warn", "", r.restored
+        ? "שוחזרה הגרסה הקודמת של הקובץ. הגרסה שהוחלפה נשמרה כגיבוי, ולחיצה נוספת תחזיר אותה."
+        : "לא נמצא גיבוי לשחזור.");
+      refreshResultHint();
+    } catch (e) { showAlert("err", "", e.message); }
+  });
+  $("#quit").addEventListener("click", async () => {
+    try { await api("/api/shutdown", {method: "POST", json: {}}); } catch (e) { /* server may close before answering */ }
+    closedScreen();
+  });
+
+  // ---- start
+  (async () => {
+    try {
+      const env = await api("/api/env");
+      $("#result").value = env.default_result;
+      $("#overwrite").checked = !!env.overwrite;
+      DAY_LIMITS = env.day_value_limits || null;
+      $("#dayValue").value = env.current_day_value ? String(env.current_day_value) : "";
+      updateDayValueHint();
+      refreshResultHint();
+      state.files = env.files.map((f) => ({id: f.id, kind: f.kind || "slips", name: f.name, size: f.size, uploading: false, pct: 100}));
+      renderFiles();
+      if (env.missing.length) {
+        showAlert("err", "חסרות ספריות בפייתון הזה: " + env.missing.join(", "),
+          "התוכנה נפתחה עם פייתון שאין בו את הספריות. הפעל אותה דרך start.bat. אם עוד לא התקנת – לחיצה כפולה על install.bat בתיקיית התוכנה (או הרץ ב-PowerShell):", env.install);
+      }
+    } catch (e) {
+      console.error("startup failed:", e && e.message ? e.message : e);
+      closedScreen("הדף נפתח בלי הרשאה. הפעל מחדש את התוכנה.");
+      return;
+    }
+    let misses = 0;
+    setInterval(async () => {
+      try { await api("/api/ping"); misses = 0; } catch (e) { if (++misses >= 3) closedScreen("החיבור לתוכנה אבד. הפעל אותה מחדש."); }
+    }, 15000);
+  })();
+})();
+</script>
+</body>
+</html>
